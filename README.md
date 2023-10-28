@@ -8,4 +8,3 @@ The system checks the ItemType categories (you choose) on the website tibia.wiki
 This program will be free and open source and all members of the Open Tibia Server community are invited to contribute and improve this idea.
 Thank you very much!
 
-Lamonato.
