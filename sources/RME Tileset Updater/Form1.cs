@@ -1,3 +1,6 @@
+
+using System.Xml;
+using System.Xml.Linq;
 /**
  * Developed by Lamonato29
  * https://github.com/lamonato29
@@ -110,6 +113,71 @@ namespace RME_Tileset_Updater
             richTextBox1.AppendText("Finished.");
 
 
+        }
+
+        private void buttonVerifyDuplicated_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Clear();
+            Dictionary<int, List<string>> all = new Dictionary<int, List<string>>();
+            if (MessageBox.Show("Select the RME's tilesets folder", "Verify Duplicated IDs", MessageBoxButtons.OK) == DialogResult.OK)
+            {
+                using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+                {
+                    if (fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        string selectedFolderPath = fbd.SelectedPath;
+
+                        string[] xmlFiles = Directory.GetFiles(selectedFolderPath, "*.xml");
+
+                        foreach (string xmlFile in xmlFiles)
+                        {
+                            var fileName = Path.GetFileName(xmlFile);
+                            try
+                            {
+                                var xmlDoc = new XmlDocument();
+                                xmlDoc.Load(xmlFile);
+                                XmlNodeList itemNodes = xmlDoc.SelectNodes("//item");
+
+                                foreach (XmlNode itemNode in itemNodes)
+                                {
+                                    if (itemNode.Attributes["id"] != null)
+                                    {
+                                        int itemId = Convert.ToInt32(itemNode.Attributes["id"].Value);
+
+                                        if (!all.ContainsKey(itemId))
+                                        {
+                                            all[itemId] = new List<string>() { fileName };
+                                        }
+                                        else
+                                        {
+                                            all[itemId].Add(fileName);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Error parsing XML: " + ex.Message);
+                            }
+                        }
+
+                        all = all.Where(item => item.Value.Count > 1).ToDictionary(item => item.Key, item => item.Value);
+
+                        all = all.OrderBy(item => item.Key).ToDictionary(item => item.Key, item => item.Value);
+
+                        var countUniques = all.Keys.Distinct().Count();
+                        richTextBox1.AppendText($"Number of Unique IDs: {countUniques}\n");
+
+                        foreach (var item in all)
+                        {
+                            foreach (var file in item.Value)
+                            {
+                                richTextBox1.AppendText($"{item.Key}-{file}\n");
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

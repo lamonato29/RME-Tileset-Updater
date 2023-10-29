@@ -38,12 +38,14 @@ namespace RME_Tileset_Updater
             checkedListBoxCategories = new CheckedListBox();
             groupBox2 = new GroupBox();
             richTextBox1 = new RichTextBox();
+            buttonVerifyDuplicated = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(buttonVerifyDuplicated);
             groupBox1.Controls.Add(buttonUpdate);
             groupBox1.Controls.Add(buttonSelectCheckedList);
             groupBox1.Controls.Add(checkedListBoxCategories);
@@ -103,6 +105,16 @@ namespace RME_Tileset_Updater
             richTextBox1.TabIndex = 0;
             richTextBox1.Text = "";
             // 
+            // buttonVerifyDuplicated
+            // 
+            buttonVerifyDuplicated.Location = new Point(298, 104);
+            buttonVerifyDuplicated.Name = "buttonVerifyDuplicated";
+            buttonVerifyDuplicated.Size = new Size(140, 23);
+            buttonVerifyDuplicated.TabIndex = 2;
+            buttonVerifyDuplicated.Text = "Verify duplicated IDs";
+            buttonVerifyDuplicated.UseVisualStyleBackColor = true;
+            buttonVerifyDuplicated.Click += buttonVerifyDuplicated_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -125,5 +137,6 @@ namespace RME_Tileset_Updater
         private CheckedListBox checkedListBoxCategories;
         private GroupBox groupBox2;
         private RichTextBox richTextBox1;
+        private Button buttonVerifyDuplicated;
     }
 }
